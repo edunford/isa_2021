@@ -1,0 +1,208 @@
+---
+title: <br>**The Illusion of Precision**
+author: .pull-left[<br>**Eric Dunford** <br> _Georgetown University_] .pull-right[<br>**Karsten Donnay** <br> _University of Zurich_]
+# date: <br><br><br><br><br>_Spring 2021_
+
+output:
+  xaringan::moon_reader:
+    lib_dir: libs
+    nature:
+      highlightStyle: github
+      highlightLines: true
+      countIncrementalSlides: false
+---
+
+```{r setup, include=FALSE}
+options(htmltools.dir.version = FALSE)
+knitr::opts_chunk$set(message = F,error = F,comment = F)
+require(kableExtra)
+require(tidyverse)
+```
+
+
+## Subnational Conflict Data
+
+<br>
+
+**Multiple datasets** offer geocoded event entries:
+
+- ACLED 
+- UCDP-GED
+- GTD
+- SCAD
+- Machine-coded dataset (e.g., ICEWS)
+
+--
+
+<br>
+
+Events are coded with varying level of **geo-spatial precision**. 
+
+- When there is insufficient information to attribute an event to a specific location, **the event location is "reassigned" to a nearby centroid/city** (depending on the data).
+
+- All data offer precision codes for each events. These **precision codes are largely ignored** when running empirical analyses.
+
+
+
+
+---
+
+## Spatial Assignment
+
+Event $i$ occurs within spatial unit $j$.
+
+$$e_{ij} \in E_{j}$$
+--
+<br>
+Spatial assignment is the process by which event $i$ gets mapped ("assigned") to location $j$. Spatial assignment is probablistic -- determined by some unobserved latent factor $Z_j$.
+
+$$M(e_{ij},Z_j) \rightarrow a(e_{ij},j)$$
+--
+<br>
+Spatial imprecision occurs when event $e_{ij}$ is assigned to a unit other than $j$. 
+$$M(e_{ij},Z_j) \rightarrow a(e_{ij},k)$$
+--
+<br>
+For every unit $j$ there exists a mapping to an arbitrary $k$. $R$ is a set of assignments rules (mappings to "aggregate assignment locations")
+
+$$(j,k) \in R$$
+---
+
+## Event Counts
+
+Common practice is to generate counts of events that occur within a spatial boundary.
+
+<br><br>
+
+$$ |E_j| = Y_j$$
+<br><br>
+
+$$ Y_j \sim Poisson(\lambda_j) $$
+<br><br>
+
+$$ log(\lambda_j) = \beta X_j$$
+---
+
+## Event Counts
+
+Common practice is to generate counts of events that occur within a spatial boundary. 
+
+Spatial imprecision alters the distribution of $Y_j$.
+
+<br>
+
+$$ Y_j \rightarrow Y_j^{obs}$$
+<br>
+Distribution $Y^{obs}$ differs from $Y$ in <u>two important ways</u>:
+
+
+1. **The tail of $Y^{obs}$ is longer than $Y$**.
+  - Spatial reassignment inflats the counts for some units. 
+  
+2. ** $Y^{obs}$ will be zero-inflated relative to $Y$ **.
+  - Units $j$ where low values in $Z_j$ result in reassignment of all $E_j$
+
+---
+
+## Distortions due to reassignment 
+
+<br><br>
+.center[ <img src = "figures/distortions.png", width=100%> ]
+
+---
+
+## Simulation DGP
+
+.center[ <img src = "figures/sim_reassignment_illustration.svg", width=80%> ]
+
+---
+
+## Simulation DGP
+
+.center[ <img src = "figures/spatial_dist_precision_prob.png", width=70%> ]
+
+---
+
+## Simulation Results
+
+<br>
+
+.center[ <img src = "figures/problem_scenario_simulations.png", width=100%> ]
+
+---
+
+## Solution Concepts
+
+**Aggregation**
+
+- Subnational data that isn't really subnational $\rightarrow$ aggregate
+
+--
+
+
+**Truncation**
+
+- Delete all imprecisely coded event entries. Only use the precisely coded entries when generating $Y_j$.  
+<!-- - Deals with distortion in the tails, but doesn't deal with inflation in zeros. Doesn't eliminate confounding between $X_j$ & $Z_j$ -->
+
+--
+
+**Latent assignment probability**
+- Estimate the probability assignment using missingness along other dimensions as proxy. 
+
+--
+
+**Simulated (random) Reassignment**
+- Reassign imprecise entries to units that are plausible origin locations. Fold uncertainty back into the estimate via bootstrap. 
+
+--
+
+**Overimputation**
+- To deal with measurement error, need to truncate and deal with measurement error in $X_j$ (which is also a function of $Z_j$)
+
+---
+
+## Truncation
+
+<br>
+
+.center[ <img src = "figures/solution_truncation.png", width=100%> ]
+
+---
+
+## Estimating the Latent Probability $Z$
+
+<br>
+
+.center[ <img src = "figures/solution_latent_estimate.png", width=100%> ]
+
+---
+
+<br>
+.center[
+# Thanks!
+
+<br><br>
+.pull-left[
+.center[
+### [Eric Dunford](ericdunford.com)
+_McCourt School of Public Policy_<br>
+**_Georgetown University_**<br>
+eric.dunford@georgetown.edu
+]
+]
+.pull-right[
+
+.center[
+
+### [Karsten Donnay](https://www.karstendonnay.net/)
+_Political Behavior and Digital Media_<br>
+**_University of Zurick_**<br>
+donnay@ipz.uzh.ch
+]
+]
+]
+
+
+
+

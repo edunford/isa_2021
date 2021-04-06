@@ -1,0 +1,19 @@
+
+
+require(tidyverse)
+require(sf)
+
+
+
+country = sf::read_sf("~/Dropbox/Dataverse/country_shapefiles/Algeria/DZA_adm0.shp") 
+
+  
+
+
+
+country %>% 
+  ggplot() +
+  geom_sf() +
+  geom_sf(data=country %>% 
+            transmute(cent = st_centroid(geometry)),
+          inherit.aes = F)

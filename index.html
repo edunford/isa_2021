@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="" xml:lang="">
+  <head>
+    <title> The Illusion of Precision</title>
+    <meta charset="utf-8" />
+    <meta name="author" content=".pull-left[ Eric Dunford   Georgetown University] .pull-right[ Karsten Donnay   University of Zurich]" />
+    <link href="libs/remark-css/default.css" rel="stylesheet" />
+    <link href="libs/remark-css/default-fonts.css" rel="stylesheet" />
+  </head>
+  <body>
+    <textarea id="source">
+class: center, middle, inverse, title-slide
+
+# <br><strong>The Illusion of Precision</strong>
+### .pull-left[<br><strong>Eric Dunford</strong> <br> <em>Georgetown University</em>] .pull-right[<br><strong>Karsten Donnay</strong> <br> <em>University of Zurich</em>]
+
+---
+
+
+
+
+
+## Subnational Conflict Data
+
+&lt;br&gt;
+
+**Multiple datasets** offer geocoded event entries:
+
+- ACLED 
+- UCDP-GED
+- GTD
+- SCAD
+- Machine-coded dataset (e.g., ICEWS)
+
+--
+
+&lt;br&gt;
+
+Events are coded with varying level of **geo-spatial precision**. 
+
+- When there is insufficient information to attribute an event to a specific location, **the event location is "reassigned" to a nearby centroid/city** (depending on the data).
+
+- All data offer precision codes for each events. These **precision codes are largely ignored** when running empirical analyses.
+
+
+
+
+---
+
+## Spatial Assignment
+
+Event `\(i\)` occurs within spatial unit `\(j\)`.
+
+`$$e_{ij} \in E_{j}$$`
+--
+&lt;br&gt;
+Spatial assignment is the process by which event `\(i\)` gets mapped ("assigned") to location `\(j\)`. Spatial assignment is probablistic -- determined by some unobserved latent factor `\(Z_j\)`.
+
+`$$M(e_{ij},Z_j) \rightarrow a(e_{ij},j)$$`
+--
+&lt;br&gt;
+Spatial imprecision occurs when event `\(e_{ij}\)` is assigned to a unit other than `\(j\)`. 
+`$$M(e_{ij},Z_j) \rightarrow a(e_{ij},k)$$`
+--
+&lt;br&gt;
+For every unit `\(j\)` there exists a mapping to an arbitrary `\(k\)`. `\(R\)` is a set of assignments rules (mappings to "aggregate assignment locations")
+
+`$$(j,k) \in R$$`
+---
+
+## Event Counts
+
+Common practice is to generate counts of events that occur within a spatial boundary.
+
+&lt;br&gt;&lt;br&gt;
+
+$$ |E_j| = Y_j$$
+&lt;br&gt;&lt;br&gt;
+
+$$ Y_j \sim Poisson(\lambda_j) $$
+&lt;br&gt;&lt;br&gt;
+
+$$ log(\lambda_j) = \beta X_j$$
+---
+
+## Event Counts
+
+Common practice is to generate counts of events that occur within a spatial boundary. 
+
+Spatial imprecision alters the distribution of `\(Y_j\)`.
+
+&lt;br&gt;
+
+$$ Y_j \rightarrow Y_j^{obs}$$
+&lt;br&gt;
+Distribution `\(Y^{obs}\)` differs from `\(Y\)` in &lt;u&gt;two important ways&lt;/u&gt;:
+
+
+1. **The tail of `\(Y^{obs}\)` is longer than `\(Y\)`**.
+  - Spatial reassignment inflats the counts for some units. 
+  
+2. ** `\(Y^{obs}\)` will be zero-inflated relative to `\(Y\)` **.
+  - Units `\(j\)` where low values in `\(Z_j\)` result in reassignment of all `\(E_j\)`
+
+---
+
+## Distortions due to reassignment 
+
+&lt;br&gt;&lt;br&gt;
+.center[ &lt;img src = "figures/distortions.png", width=100%&gt; ]
+
+---
+
+## Simulation DGP
+
+.center[ &lt;img src = "figures/sim_reassignment_illustration.svg", width=80%&gt; ]
+
+---
+
+## Simulation DGP
+
+.center[ &lt;img src = "figures/spatial_dist_precision_prob.png", width=70%&gt; ]
+
+---
+
+## Simulation Results
+
+&lt;br&gt;
+
+.center[ &lt;img src = "figures/problem_scenario_simulations.png", width=100%&gt; ]
+
+---
+
+## Solution Concepts
+
+**Aggregation**
+
+- Subnational data that isn't really subnational `\(\rightarrow\)` aggregate
+
+--
+
+
+**Truncation**
+
+- Delete all imprecisely coded event entries. Only use the precisely coded entries when generating `\(Y_j\)`.  
+&lt;!-- - Deals with distortion in the tails, but doesn't deal with inflation in zeros. Doesn't eliminate confounding between `\(X_j\)` &amp; `\(Z_j\)` --&gt;
+
+--
+
+**Latent assignment probability**
+- Estimate the probability assignment using missingness along other dimensions as proxy. 
+
+--
+
+**Simulated (random) Reassignment**
+- Reassign imprecise entries to units that are plausible origin locations. Fold uncertainty back into the estimate via bootstrap. 
+
+--
+
+**Overimputation**
+- To deal with measurement error, need to truncate and deal with measurement error in `\(X_j\)` (which is also a function of `\(Z_j\)`)
+
+---
+
+## Truncation
+
+&lt;br&gt;
+
+.center[ &lt;img src = "figures/solution_truncation.png", width=100%&gt; ]
+
+---
+
+## Estimating the Latent Probability `\(Z\)`
+
+&lt;br&gt;
+
+.center[ &lt;img src = "figures/solution_latent_estimate.png", width=100%&gt; ]
+
+---
+
+&lt;br&gt;
+.center[
+# Thanks!
+
+&lt;br&gt;&lt;br&gt;
+.pull-left[
+.center[
+### [Eric Dunford](ericdunford.com)
+_McCourt School of Public Policy_&lt;br&gt;
+**_Georgetown University_**&lt;br&gt;
+eric.dunford@georgetown.edu
+]
+]
+.pull-right[
+
+.center[
+
+### [Karsten Donnay](https://www.karstendonnay.net/)
+_Political Behavior and Digital Media_&lt;br&gt;
+**_University of Zurick_**&lt;br&gt;
+donnay@ipz.uzh.ch
+]
+]
+]
+    </textarea>
+<style data-target="print-only">@media screen {.remark-slide-container{display:block;}.remark-slide-scaler{box-shadow:none;}}</style>
+<script src="https://remarkjs.com/downloads/remark-latest.min.js"></script>
+<script>var slideshow = remark.create({
+"highlightStyle": "github",
+"highlightLines": true,
+"countIncrementalSlides": false
+});
+if (window.HTMLWidgets) slideshow.on('afterShowSlide', function (slide) {
+  window.dispatchEvent(new Event('resize'));
+});
+(function(d) {
+  var s = d.createElement("style"), r = d.querySelector(".remark-slide-scaler");
+  if (!r) return;
+  s.type = "text/css"; s.innerHTML = "@page {size: " + r.style.width + " " + r.style.height +"; }";
+  d.head.appendChild(s);
+})(document);
+
+(function(d) {
+  var el = d.getElementsByClassName("remark-slides-area");
+  if (!el) return;
+  var slide, slides = slideshow.getSlides(), els = el[0].children;
+  for (var i = 1; i < slides.length; i++) {
+    slide = slides[i];
+    if (slide.properties.continued === "true" || slide.properties.count === "false") {
+      els[i - 1].className += ' has-continuation';
+    }
+  }
+  var s = d.createElement("style");
+  s.type = "text/css"; s.innerHTML = "@media print { .has-continuation { display: none; } }";
+  d.head.appendChild(s);
+})(document);
+// delete the temporary CSS (for displaying all slides initially) when the user
+// starts to view slides
+(function() {
+  var deleted = false;
+  slideshow.on('beforeShowSlide', function(slide) {
+    if (deleted) return;
+    var sheets = document.styleSheets, node;
+    for (var i = 0; i < sheets.length; i++) {
+      node = sheets[i].ownerNode;
+      if (node.dataset["target"] !== "print-only") continue;
+      node.parentNode.removeChild(node);
+    }
+    deleted = true;
+  });
+})();
+// adds .remark-code-has-line-highlighted class to <pre> parent elements
+// of code chunks containing highlighted lines with class .remark-code-line-highlighted
+(function(d) {
+  const hlines = d.querySelectorAll('.remark-code-line-highlighted');
+  const preParents = [];
+  const findPreParent = function(line, p = 0) {
+    if (p > 1) return null; // traverse up no further than grandparent
+    const el = line.parentElement;
+    return el.tagName === "PRE" ? el : findPreParent(el, ++p);
+  };
+
+  for (let line of hlines) {
+    let pre = findPreParent(line);
+    if (pre && !preParents.includes(pre)) preParents.push(pre);
+  }
+  preParents.forEach(p => p.classList.add("remark-code-has-line-highlighted"));
+})(document);</script>
+
+<script>
+(function() {
+  var links = document.getElementsByTagName('a');
+  for (var i = 0; i < links.length; i++) {
+    if (/^(https?:)?\/\//.test(links[i].getAttribute('href'))) {
+      links[i].target = '_blank';
+    }
+  }
+})();
+</script>
+
+<script>
+slideshow._releaseMath = function(el) {
+  var i, text, code, codes = el.getElementsByTagName('code');
+  for (i = 0; i < codes.length;) {
+    code = codes[i];
+    if (code.parentNode.tagName !== 'PRE' && code.childElementCount === 0) {
+      text = code.textContent;
+      if (/^\\\((.|\s)+\\\)$/.test(text) || /^\\\[(.|\s)+\\\]$/.test(text) ||
+          /^\$\$(.|\s)+\$\$$/.test(text) ||
+          /^\\begin\{([^}]+)\}(.|\s)+\\end\{[^}]+\}$/.test(text)) {
+        code.outerHTML = code.innerHTML;  // remove <code></code>
+        continue;
+      }
+    }
+    i++;
+  }
+};
+slideshow._releaseMath(document);
+</script>
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+(function () {
+  var script = document.createElement('script');
+  script.type = 'text/javascript';
+  script.src  = 'https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML';
+  if (location.protocol !== 'file:' && /^https?:/.test(script.src))
+    script.src  = script.src.replace(/^https?:/, '');
+  document.getElementsByTagName('head')[0].appendChild(script);
+})();
+</script>
+  </body>
+</html>
