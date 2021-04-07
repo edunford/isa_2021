@@ -131,6 +131,12 @@ Distribution `\(Y^{obs}\)` differs from `\(Y\)` in &lt;u&gt;two important ways&l
 
 ---
 
+## Simulation Results
+
+.center[ &lt;img src = "figures/unit_imbalance_bias.png", width=90%&gt; ]
+
+---
+
 ## Solution Concepts
 
 **Aggregation**
@@ -152,13 +158,13 @@ Distribution `\(Y^{obs}\)` differs from `\(Y\)` in &lt;u&gt;two important ways&l
 
 --
 
-**Simulated (random) Reassignment**
+**Simulated Reassignment**
 - Reassign imprecise entries to units that are plausible origin locations. Fold uncertainty back into the estimate via bootstrap. 
 
 --
 
 **Overimputation**
-- To deal with measurement error, need to truncate and deal with measurement error in `\(X_j\)` (which is also a function of `\(Z_j\)`)
+- Multiple imputation on variables with measured with error. 
 
 ---
 
